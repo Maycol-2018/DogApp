@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="240dp"
+    android:height="240dp"
+    android:viewportWidth="240"
+    android:viewportHeight="240">
+    <path
+        android:fillColor="@color/placeholder_dog_dark_brown"
+        android:pathData="M52,72L20,20L28,126L61,151L70,90M188,72L220,20L212,126L179,151L170,90" />
+    <path
+        android:fillColor="@color/placeholder_dog_brown"
+        android:pathData="M120,40C67,40 37,79 37,135C37,187 72,220 120,220C168,220 203,187 203,135C203,79 173,40 120,40" />
+    <path
+        android:fillColor="@color/placeholder_dog_muzzle"
+        android:pathData="M75,148C75,122 93,107 120,107C147,107 165,122 165,148C165,181 147,197 120,197C93,197 75,181 75,148" />
+    <path
+        android:fillColor="@color/placeholder_dog_dark_brown"
+        android:pathData="M82,103A10,12 0,1 0,82 127A10,12 0,1 0,82 103M158,103A10,12 0,1 0,158 127A10,12 0,1 0,158 103M104,145C104,137 136,137 136,145C136,154 104,154 104,145" />
+</vector>

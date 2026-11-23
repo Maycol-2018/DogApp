@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">DogApp</string>
+    <string name="login_dog_description">Cabeza de perro</string>
+    <string name="login_biometric_description">Autenticación con huella digital</string>
+    <string name="biometric_prompt_title">Autenticación con Biometría</string>
+    <string name="biometric_prompt_subtitle">Ingrese su huella digital</string>
+    <string name="biometric_prompt_cancel">Cancelar</string>
+    <string name="login_biometric_unavailable">La autenticación biométrica no está disponible en este dispositivo.</string>
+    <string name="login_biometric_not_enrolled">Configura una huella digital en el emulador o dispositivo para continuar.</string>
+    <string name="login_biometric_failed">La huella no fue reconocida. Inténtalo nuevamente.</string>
+    <string name="home_admin_placeholder_title">Home Administrador de Citas</string>
+    <string name="home_admin_placeholder_message">Esta pantalla será implementada en la HU2.</string>
 </resources>
