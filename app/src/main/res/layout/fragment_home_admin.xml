@@ -59,8 +59,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/appointments_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:clipToPadding="false"
         android:layout_marginTop="8dp"
         android:paddingTop="12dp"
@@ -73,15 +73,16 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_appointment_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="24dp"
         android:contentDescription="@string/home_add_appointment_description"
         android:src="@drawable/ic_add"
         app:backgroundTint="@color/fab_pink"
         app:elevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:maxImageSize="28dp"
         app:tint="@color/white" />
 </androidx.constraintlayout.widget.ConstraintLayout>
