@@ -9,6 +9,7 @@ import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.example.dogapp.R
 import com.example.dogapp.databinding.FragmentLoginBinding
@@ -65,7 +66,13 @@ class LoginFragment : Fragment() {
     private val authenticationCallback = object : BiometricPrompt.AuthenticationCallback() {
         override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
             super.onAuthenticationSucceeded(result)
-            findNavController().navigate(R.id.action_loginFragment_to_homeAdminFragment)
+            findNavController().navigate(
+                R.id.action_loginFragment_to_homeAdminFragment,
+                null,
+                NavOptions.Builder()
+                    .setPopUpTo(R.id.loginFragment, true)
+                    .build()
+            )
         }
 
         override fun onAuthenticationFailed() {

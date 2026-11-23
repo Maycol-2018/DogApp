@@ -18,6 +18,29 @@
     <fragment
         android:id="@+id/homeAdminFragment"
         android:name="com.example.dogapp.view.fragment.HomeAdminFragment"
-        android:label="@string/home_admin_placeholder_title"
-        tools:layout="@layout/fragment_home_admin" />
+        android:label="@string/home_admin_title"
+        tools:layout="@layout/fragment_home_admin">
+        <action
+            android:id="@+id/action_homeAdminFragment_to_newAppointmentFragment"
+            app:destination="@id/newAppointmentFragment" />
+        <action
+            android:id="@+id/action_homeAdminFragment_to_appointmentDetailFragment"
+            app:destination="@id/appointmentDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/newAppointmentFragment"
+        android:name="com.example.dogapp.view.fragment.NewAppointmentFragment"
+        android:label="@string/new_appointment_placeholder_title"
+        tools:layout="@layout/fragment_placeholder" />
+
+    <fragment
+        android:id="@+id/appointmentDetailFragment"
+        android:name="com.example.dogapp.view.fragment.AppointmentDetailFragment"
+        android:label="@string/appointment_detail_placeholder_title"
+        tools:layout="@layout/fragment_placeholder">
+        <argument
+            android:name="appointmentId"
+            app:argType="long" />
+    </fragment>
 </navigation>

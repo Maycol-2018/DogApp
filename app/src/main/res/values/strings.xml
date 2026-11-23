@@ -8,6 +8,10 @@
     <string name="login_biometric_unavailable">La autenticación biométrica no está disponible en este dispositivo.</string>
     <string name="login_biometric_not_enrolled">Configura una huella digital en el emulador o dispositivo para continuar.</string>
     <string name="login_biometric_failed">La huella no fue reconocida. Inténtalo nuevamente.</string>
-    <string name="home_admin_placeholder_title">Home Administrador de Citas</string>
-    <string name="home_admin_placeholder_message">Esta pantalla será implementada en la HU2.</string>
+    <string name="home_admin_title">Administrador de Citas</string>
+    <string name="home_add_appointment_description">Crear nueva cita</string>
+    <string name="appointment_pet_image_description">Imagen de la mascota</string>
+    <string name="appointment_turn_format"># %1$d</string>
+    <string name="new_appointment_placeholder_title">Nueva Cita</string>
+    <string name="appointment_detail_placeholder_title">Detalle de la Cita</string>
 </resources>
