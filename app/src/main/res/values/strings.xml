@@ -34,6 +34,13 @@
     <string name="new_appointment_saved">Cita guardada</string>
     <string name="new_appointment_save_error">No se pudo guardar la cita</string>
 
+    <!-- (Allan) HU4: textos de la ventana "Detalle de la Cita" -->
+    <string name="appointment_detail_owner_format">Propietario: %1$s</string>
+    <string name="appointment_detail_phone_format">Teléfono: %1$s</string>
+    <string name="appointment_detail_delete_description">Eliminar cita</string>
+    <string name="appointment_detail_edit_description">Editar cita</string>
+    <string name="appointment_detail_deleted">Cita eliminada</string>
+
     <!-- (Yair) HU3: opciones del Spinner de síntomas. La posición 0 ("Síntomas") es solo el texto guía: no cuenta como síntoma elegido. -->
     <string-array name="symptoms_options">
         <item>Síntomas</item>
