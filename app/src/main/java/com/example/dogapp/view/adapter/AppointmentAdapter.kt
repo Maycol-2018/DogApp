@@ -9,6 +9,8 @@ import com.example.dogapp.R
 import com.example.dogapp.databinding.ItemAppointmentBinding
 import com.example.dogapp.model.Appointment
 
+import com.bumptech.glide.Glide // (Yair) HU3: carga la foto de la raza desde internet
+
 class AppointmentAdapter(
     private val onItemClick: (Appointment) -> Unit
 ) : ListAdapter<Appointment, AppointmentAdapter.AppointmentViewHolder>(DIFF_CALLBACK) {
@@ -36,12 +38,24 @@ class AppointmentAdapter(
             binding.appointmentTurn.text =
                 binding.root.context.getString(R.string.appointment_turn_format, appointment.id)
 
-            val imageResource = binding.root.context.resources.getIdentifier(
-                appointment.petImageName,
-                "drawable",
-                binding.root.context.packageName
-            ).takeIf { it != 0 } ?: R.drawable.dog_head
-            binding.petImage.setImageResource(imageResource)
+            // (Yair) HU3: si la cita tiene foto de la API (petImageUrl) se descarga con Glide;
+            // si no (citas de ejemplo), se usa la imagen local de siempre.
+            if (appointment.petImageUrl.isNotBlank()) {
+                Glide.with(binding.petImage)
+                    .load(appointment.petImageUrl)
+                    .placeholder(R.drawable.dog_head) // se muestra mientras descarga
+                    .error(R.drawable.dog_head)       // se muestra si falla la descarga
+                    .into(binding.petImage)
+            } else {
+                // Cancela cualquier descarga pendiente: el RecyclerView reutiliza las filas
+                Glide.with(binding.petImage).clear(binding.petImage)
+                val imageResource = binding.root.context.resources.getIdentifier(
+                    appointment.petImageName,
+                    "drawable",
+                    binding.root.context.packageName
+                ).takeIf { it != 0 } ?: R.drawable.dog_head
+                binding.petImage.setImageResource(imageResource)
+            }
 
             binding.root.setOnClickListener { onItemClick(appointment) }
         }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- (Yair) HU3: fondo de la barra superior de "Nueva Cita": mismo color oscuro del login
+     y esquinas de abajo redondeadas, para que se vea igual al resto de la app -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <!-- Color de fondo (ya existía en colors.xml) -->
+    <solid android:color="@color/login_background" />
+    <!-- Solo se redondean las esquinas de abajo -->
+    <corners
+        android:bottomLeftRadius="40dp"
+        android:bottomRightRadius="40dp" />
+</shape>

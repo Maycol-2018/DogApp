@@ -1,301 +1,212 @@
 # DogApp
 
-Aplicación móvil Android para gestionar citas de una veterinaria. El proyecto se desarrolla con Kotlin, XML, Room, Navigation Component, ViewModel, Repository, Coroutines, LiveData, RecyclerView y BiometricPrompt.
+**DogApp** es una agenda de citas para una veterinaria, hecha como aplicación nativa Android en Kotlin.
+El administrador entra con su huella digital, ve la lista de citas agendadas y puede crear, consultar,
+editar y eliminar citas. Cada cita muestra una foto del perro según su raza, obtenida desde la API pública
+[dog.ceo](https://dog.ceo/dog-api/).
 
-## Estado actual
+Proyecto del curso *Desarrollo de Aplicaciones para Dispositivos Móviles* — Universidad del Valle,
+Miniproyecto 1 (Sprint 1).
 
-La rama de trabajo actual es `maycol`. Las siguientes historias de usuario están implementadas:
+## ¿Qué hace la app?
 
-- HU1: Login con autenticación biométrica.
-- HU2: Home del administrador de citas.
+| Pantalla | Historia de usuario | Qué permite |
+|---|---|---|
+| Login | HU1 | Entrar con la huella digital (BiometricPrompt) tocando una animación Lottie. |
+| Home Administrador de Citas | HU2 | Ver todas las citas guardadas, con foto, nombre, síntoma y turno. |
+| Nueva Cita | HU3 | Registrar una cita: mascota, raza (sugerida desde la API), propietario, teléfono y síntoma. |
+| Detalle de la Cita | HU4 | Ver toda la información de una cita y eliminarla o ir a editarla. |
+| Editar Cita | HU5 | Modificar nombre, raza, propietario y teléfono de una cita existente. |
 
-Las pantallas de HU3 —Nueva Cita— y HU4 —Detalle de la Cita— existen actualmente como destinos provisionales para validar la navegación. Su funcionalidad se implementará en las próximas historias.
-
-## HU1: Login con biometría
-
-La pantalla inicial contiene:
-
-- Fondo gris oscuro y tema sin toolbar.
-- Imagen transparente del perro en la parte superior derecha.
-- Título `DogApp` con fuente externa descargable `Lilita One`.
-- Animación Lottie de huella digital.
-- Diálogo nativo de `BiometricPrompt` con título, subtítulo y botón cancelar.
-- Mensajes para biometría no disponible, huella no registrada o huella incorrecta.
-- Navegación hacia Home después de una autenticación exitosa.
-- Ícono de la aplicación usando la imagen real del perro.
-
-Recursos principales:
+### Flujo de uso
 
 ```text
-app/src/main/res/drawable/dog_head.png
-app/src/main/assets/fingerprint_animation.json
-app/src/main/res/font/dogapp_display.xml
+Login (huella digital)
+   │ autenticación correcta
+   ▼
+Home Administrador de Citas ──(botón +)──► Nueva Cita ──(Guardar)──► Home
+   │ tocar una cita
+   ▼
+Detalle de la Cita ──(botón rosado)──► elimina la cita y vuelve al Home
+   │ botón azul
+   ▼
+Editar Cita ──(Editar Cita)──► actualiza la cita y vuelve al Home
+            ──(flecha atrás)──► vuelve al Detalle
 ```
 
-La animación debe conservar el nombre `fingerprint_animation.json`. La imagen del perro debe conservar el nombre `dog_head.png` para que las referencias actuales sigan funcionando.
+- Desde el Home, el botón atrás del teléfono envía la app al escritorio (no regresa al Login).
+- La lista del Home se actualiza sola cuando se crea, edita o elimina una cita, porque observa la base de datos.
 
-## HU2: Home Administrador de Citas
+## Detalle de cada pantalla
 
-La pantalla de Home contiene:
+### HU1 · Login
+- Fondo gris oscuro, sin toolbar.
+- Cabeza de perro con fondo transparente arriba a la derecha y título `DogApp` con fuente externa (`Lilita One`).
+- Animación Lottie de huella (`assets/fingerprint_animation.json`). Al tocarla aparece el diálogo nativo
+  "Autenticación con Biometría" con el botón *Cancelar*.
+- Si la huella es correcta navega al Home; si no, el sistema muestra su propio error.
+- Ícono propio de la aplicación.
 
-- Header gris oscuro con esquina inferior izquierda redondeada.
-- Título `Administrador de Citas`.
-- Imagen del perro y texto `DogApp` en el header.
-- Lista de citas debajo del header mediante `RecyclerView`.
-- Tarjetas blancas con bordes redondeados, elevación y avatar circular.
-- Nombre de la mascota y descripción del síntoma.
-- Turno mostrado como `#id`, usando el ID autogenerado por Room.
-- Botón cuadrado rosado con bordes redondeados y signo `+` centrado.
-- Navegación del botón hacia HU3.
-- Navegación de cada tarjeta hacia HU4.
-- El botón atrás del sistema desde Home envía la aplicación al escritorio del dispositivo.
+### HU2 · Home Administrador de Citas
+- Header gris oscuro con la esquina inferior izquierda curva, título "Administrador de Citas" y logo de DogApp.
+- `RecyclerView` con tarjetas blancas redondeadas: foto circular de la mascota (Glide), nombre, síntoma y
+  turno (`# id` autogenerado por Room).
+- Botón flotante rosado `#F05861` que abre Nueva Cita. Cada tarjeta abre el Detalle de la Cita.
 
-Mientras se desarrolla HU3, el Repository crea tres citas de ejemplo únicamente cuando la base de datos está vacía:
+### HU3 · Nueva Cita
+- Toolbar oscura con esquinas inferiores curvas, título centrado y flecha rosada.
+- Campos Material con hint que sube al enfocar y borde morado: nombre (máx. 15), raza, propietario (máx. 30)
+  y teléfono (solo números, máx. 10).
+- La raza es un `AutoCompleteTextView` que sugiere razas desde la 2.ª letra (API `breeds/list/all`).
+- Lista de síntomas fija; si no se elige ninguno aparece "Selecciona un síntoma".
+- Botón "Guardar Cita" inactivo hasta llenar los 4 campos. Al guardar, se pide una foto de la raza
+  (API `breed/{raza}/images/random`), se guarda en Room y se vuelve al Home.
 
-```text
-Cory  - Fractura extremidad
-Zeus  - Solo duerme
-Rocky - No come
-```
+### HU4 · Detalle de la Cita
+- Toolbar oscura con el nombre de la mascota y flecha rosada que vuelve al Home.
+- Tarjeta con la foto de la mascota montada sobre una tarjeta blanca con: turno, raza en negro bold, síntoma,
+  línea rosada, propietario y teléfono.
+- Botón flotante rosado: elimina la cita de Room y vuelve al Home (sin diálogo de confirmación).
+- Botón flotante azul oscuro: abre Editar Cita enviando el `appointmentId`.
 
-Estos datos sirven para visualizar la interfaz. Más adelante HU3 deberá permitir crear citas reales desde la aplicación.
+### HU5 · Editar Cita
+- Mismo diseño de formulario que Nueva Cita, con el título "Editar Cita" y los datos actuales precargados.
+- Botón "Editar Cita" inactivo hasta que los 4 campos estén llenos; al habilitarse el texto queda blanco bold.
+- Al editar, actualiza la cita en Room y vuelve al Home. Si cambió la raza, se pide una foto nueva de esa raza;
+  si no, se conserva la foto anterior.
 
 ## Arquitectura
 
-El proyecto usa una arquitectura por capas inspirada en MVC, implementada en la práctica como un MVVM sencillo con Repository:
+La app usa **MVVM con Repository**. Cada capa solo habla con la que tiene debajo:
 
 ```text
-Fragment / View
-        |
-        v
-ViewModel
-        |
-        v
-Repository
-        |
-        +--> Room / SQLite local
-        |
-        +--> Retrofit / API remota futura
+Fragment (View)        muestra la pantalla y escucha los eventos del usuario
+      │ observa LiveData / llama funciones
+      ▼
+AppointmentViewModel   guarda el estado de la pantalla y lanza corrutinas (viewModelScope)
+      │
+      ▼
+AppointmentRepository  único punto de acceso a los datos
+      │
+      ├──► Room (AppDatabase + AppointmentDao)   base de datos local SQLite
+      └──► Retrofit (ApiService)                 API REST dog.ceo
 ```
 
-La interfaz no debe acceder directamente a Room ni a Retrofit.
+- Los Fragments **no** acceden a Room ni a Retrofit directamente.
+- Las consultas de Room devuelven `Flow`, que el ViewModel convierte a `LiveData`; por eso las pantallas se
+  actualizan solas cuando cambian los datos.
+- Las operaciones de red y base de datos corren en `Dispatchers.IO`.
+- El guardado y la edición publican su estado con `SaveState` (`Idle`, `Loading`, `Success`, `Error`) para
+  mostrar el círculo de carga y los mensajes.
 
-### Estructura recomendada
+### Estructura del código
 
 ```text
 app/src/main/java/com/example/dogapp/
+├── MainActivity.kt                  Activity única que aloja el NavHostFragment
 ├── data/
-│   ├── AppDatabase.kt
-│   └── AppointmentDao.kt
+│   ├── AppDatabase.kt               base de datos Room (singleton)
+│   └── AppointmentDao.kt            consultas: listar, buscar por id, insertar, actualizar, eliminar
 ├── model/
-│   └── Appointment.kt
+│   ├── Appointment.kt               entidad Room de la cita
+│   ├── BreedsResponse.kt            respuesta de la API con la lista de razas
+│   └── BreedImageResponse.kt        respuesta de la API con la foto
 ├── repository/
-│   └── AppointmentRepository.kt
+│   └── AppointmentRepository.kt     une Room y la API
 ├── utils/
+│   └── Constants.kt                 URL base y endpoints de dog.ceo
 ├── view/
-│   ├── adapter/
-│   │   └── AppointmentAdapter.kt
-│   ├── fragment/
-│   │   ├── LoginFragment.kt
-│   │   ├── HomeAdminFragment.kt
-│   │   ├── NewAppointmentFragment.kt
-│   │   └── AppointmentDetailFragment.kt
-│   └── viewholder/
+│   ├── adapter/AppointmentAdapter.kt
+│   └── fragment/
+│       ├── LoginFragment.kt               HU1
+│       ├── HomeAdminFragment.kt           HU2
+│       ├── NewAppointmentFragment.kt      HU3
+│       ├── AppointmentDetailFragment.kt   HU4
+│       └── EditAppointmentFragment.kt     HU5
 ├── viewmodel/
-│   └── AppointmentViewModel.kt
+│   ├── AppointmentViewModel.kt
+│   └── SaveState.kt
 └── webservice/
+    ├── ApiService.kt                endpoints de Retrofit
+    ├── RetrofitClient.kt
+    └── ApiUtils.kt
 ```
 
-### Responsabilidad de cada paquete
+La navegación entre pantallas está en `app/src/main/res/navigation/nav_graph.xml` (Navigation Component,
+una sola Activity con Fragments).
 
-#### `model/`
-
-Contiene las entidades del dominio y los DTOs de servicios remotos.
-
-`Appointment` es actualmente la entidad Room principal:
+### Modelo de datos
 
 ```kotlin
 @Entity(tableName = "appointments")
 data class Appointment(
     @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
+    val id: Long = 0,                   // turno de la cita
     val petName: String,
     val symptomDescription: String,
-    val petImageName: String = "dog_head"
+    val petImageName: String = "dog_head",
+    val breed: String = "",
+    val ownerName: String = "",
+    val ownerPhone: String = "",
+    val petImageUrl: String = ""        // foto de la raza obtenida de dog.ceo
 )
 ```
 
-Las entidades no deben contener lógica de interfaz.
+### API REST (dog.ceo)
 
-#### `data/`
+| Endpoint | Uso |
+|---|---|
+| `GET breeds/list/all` | Lista de razas para el autocompletado de Nueva y Editar Cita. |
+| `GET breed/{raza}/images/random` | Foto aleatoria de la raza elegida. |
+| `GET breeds/image/random` | Foto aleatoria general, de respaldo si la raza no tiene foto. |
 
-Contiene Room:
+## Tecnologías
 
-- `AppDatabase`: base de datos singleton.
-- `AppointmentDao`: consultas y operaciones de persistencia.
+- **Kotlin** y layouts **XML** con **View Binding**
+- **Navigation Component** (Fragments)
+- **Room** (SQLite) con **KSP**
+- **ViewModel**, **LiveData**, **Flow** y **Coroutines**
+- **Retrofit** + **Gson** para la API REST
+- **Glide** para cargar las fotos
+- **BiometricPrompt** para la huella digital
+- **Lottie** para la animación del login
+- **Material Components** (TextInputLayout, MaterialButton, MaterialCardView)
 
-Las operaciones de Room deben ser `suspend` o devolver `Flow`/`LiveData`. No deben ejecutarse en el hilo principal.
+Requisitos: Android 7.0 (API 24) o superior. Compila con `targetSdk 37`.
 
-#### `repository/`
+## Cómo ejecutar
 
-Es el único punto de acceso del ViewModel a las fuentes de datos. Aquí se combinan Room, Retrofit u otras fuentes futuras.
-
-El Fragment no debe llamar directamente a un DAO ni a un servicio Retrofit.
-
-#### `viewmodel/`
-
-Coordina las acciones de la pantalla y expone el estado observable. Debe utilizar `viewModelScope` para coroutines y mantener las referencias de datos fuera del ciclo de vida de la vista.
-
-Patrón recomendado:
-
-```kotlin
-private val _state = MutableLiveData<UiState>()
-val state: LiveData<UiState> = _state
-```
-
-El ViewModel no debe contener referencias a `View`, `TextView`, `ViewBinding`, Activity ni Fragment.
-
-#### `view/`
-
-Contiene la interfaz:
-
-- Un Fragment por pantalla.
-- Un Adapter por lista.
-- Un ViewHolder cuando la lista lo requiera.
-- Un layout XML por pantalla o componente reutilizable.
-
-Los Fragments deben configurar listeners, observar el ViewModel y actualizar la interfaz. La lógica de negocio debe permanecer en Repository/ViewModel.
-
-#### `webservice/`
-
-Se utilizará para futuras APIs REST:
-
-```text
-ApiService.kt
-RetrofitClient.kt
-ApiUtils.kt
-```
-
-Las URL base y endpoints deben centralizarse en `utils/Constants.kt`. No deben escribirse dentro de un Fragment.
-
-#### `utils/`
-
-Contiene constantes, claves de navegación, nombres de base de datos y configuraciones compartidas.
-
-## Navegación actual
-
-La navegación está declarada en:
-
-```text
-app/src/main/res/navigation/nav_graph.xml
-```
-
-Flujo actual:
-
-```text
-LoginFragment
-    |
-    | autenticación biométrica exitosa
-    v
-HomeAdminFragment
-    ├── NewAppointmentFragment    [HU3 provisional]
-    └── AppointmentDetailFragment [HU4 provisional]
-```
-
-Al ingresar a Home, el login se elimina de la pila de navegación. Por eso, el botón atrás no retorna al login. Además, `HomeAdminFragment` maneja el botón atrás del sistema para enviar la tarea al segundo plano y mostrar el escritorio del dispositivo.
-
-## Reglas para implementar las siguientes HUS
-
-1. Crear primero el modelo o entidad necesaria.
-2. Agregar o modificar el DAO para las operaciones de Room.
-3. Implementar la operación en el Repository.
-4. Exponer el estado o acción desde el ViewModel.
-5. Crear el Fragment y su layout XML.
-6. Declarar la pantalla y sus acciones en `nav_graph.xml`.
-7. Conectar los eventos de la interfaz al ViewModel o a la navegación.
-8. Ejecutar operaciones de red o base de datos con coroutines y `Dispatchers.IO` cuando corresponda.
-9. Validar campos antes de guardar.
-10. Mostrar estados de carga, éxito, error y lista vacía.
-11. No implementar lógica de negocio directamente dentro de los layouts o Fragments.
-12. No crear una segunda base de datos ni acceder a SQLite directamente fuera de Room.
-
-## Próximas implementaciones
-
-### HU3: Nueva Cita
-
-Debe reemplazar `NewAppointmentFragment` y permitir:
-
-- Capturar los datos de la mascota.
-- Validar campos obligatorios.
-- Guardar una nueva entidad mediante `AppointmentViewModel` y `AppointmentRepository`.
-- Regresar a Home y actualizar la lista automáticamente.
-
-El DAO deberá incorporar una operación como:
-
-```kotlin
-@Insert
-suspend fun insert(appointment: Appointment): Long
-```
-
-### HU4: Detalle de la Cita
-
-Debe reemplazar `AppointmentDetailFragment` y:
-
-- Recibir el `appointmentId` desde la navegación.
-- Consultar la cita en Room a través del ViewModel y Repository.
-- Mostrar toda la información de la mascota.
-- Preparar las acciones de editar o eliminar si la HU lo requiere.
-
-El DAO deberá incorporar una consulta por ID:
-
-```kotlin
-@Query("SELECT * FROM appointments WHERE id = :appointmentId")
-suspend fun getAppointmentById(appointmentId: Long): Appointment?
-```
-
-## Compilación y verificación
-
-Desde la raíz del proyecto ejecutar:
+1. Abrir la carpeta del proyecto en Android Studio y esperar el *Gradle Sync*.
+2. Conectar un dispositivo o emulador **con una huella registrada** (en el emulador:
+   *Extended controls → Fingerprint*).
+3. Ejecutar la configuración `app`, o desde la terminal:
 
 ```powershell
 .\gradlew.bat :app:assembleDebug
 ```
 
-La compilación debe finalizar con:
+La app necesita internet para sugerir razas y descargar las fotos. Sin conexión las citas se guardan igual,
+con una imagen por defecto.
+
+> Mientras la base de datos está vacía, el Repository crea tres citas de ejemplo (Cory, Zeus y Rocky) para
+> visualizar el Home. Estas citas no tienen raza, propietario ni teléfono.
+
+## Trabajo en equipo
+
+Cada integrante trabaja en su propia rama creada desde `develop` y la integra con un Pull Request.
+
+| Rama | Historias de usuario |
+|---|---|
+| `maycol` | HU1 Login y HU2 Home |
+| `yair` | HU3 Nueva Cita |
+| `allan` | HU4 Detalle de la Cita |
+| `joel` | HU5 Editar Cita |
+
+Los commits siguen *Conventional Commits* en inglés y mencionan la HU:
 
 ```text
-BUILD SUCCESSFUL
-```
-
-También se recomienda verificar:
-
-- Que no existan errores de recursos XML.
-- Que los IDs usados por View Binding coincidan con los layouts.
-- Que las rutas del `nav_graph.xml` coincidan con las clases reales.
-- Que los datos se consulten desde Room.
-- Que las pantallas no llamen directamente al DAO.
-
-## Convención de commits
-
-Los commits deben ser pequeños, relacionados y escritos en inglés usando Conventional Commits:
-
-```text
-feat: add appointment creation form
-fix: validate empty appointment fields
-style: refine appointment detail layout
-refactor: move appointment lookup to repository
-test: add appointment repository tests
-build: update Room dependencies
-```
-
-No mezclar en un mismo commit una nueva funcionalidad, una refactorización grande y cambios visuales no relacionados.
-
-## Historial relevante
-
-```text
-0b1082e build: add Room persistence support
-45dc0c6 feat: add local appointment data layer
-e5391c0 feat: add appointments home screen
-d340eb1 fix: align appointments list and action button
-f556d45 style: make add appointment button rounded
+feat(detail): show selected appointment and delete it from Room returning to Home (HU4)
+feat(edit): prefill, validate and update appointment in Room returning to Home (HU5)
+style(detail): match info card corners and shadow to HU4 mockup
+docs: describe the project in the README
 ```

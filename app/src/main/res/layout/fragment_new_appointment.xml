@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- (Yair) HU3: pantalla "Nueva Cita". Raíz = ConstraintLayout: arriba la barra oscura con título y flecha de volver,
+     debajo un ScrollView con el formulario (así no se corta si el teclado ocupa espacio). -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".view.fragment.NewAppointmentFragment">
+
+    <!-- Barra superior: usa el fondo oscuro redondeado bg_form_toolbar -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/new_appointment_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_form_toolbar"
+        android:elevation="2dp"
+        android:paddingBottom="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Flecha de volver (tinte rosado). El Fragment la usa con popBackStack() -->
+        <ImageView
+            android:id="@+id/back_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/new_appointment_back_description"
+            android:padding="12dp"
+            android:src="@drawable/ic_arrow_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/fab_pink" />
+
+        <!-- Título centrado respecto a la flecha -->
+        <TextView
+            android:id="@+id/new_appointment_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/new_appointment_title"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/back_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/back_button" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Zona desplazable con el formulario -->
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/new_appointment_toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="24dp"
+            android:paddingTop="32dp"
+            android:paddingEnd="24dp"
+            android:paddingBottom="32dp">
+
+            <!-- Campo 1: nombre de la mascota (máx. 15 caracteres, cada palabra en mayúscula) -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/pet_name_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/new_appointment_pet_name_hint"
+                android:textColorHint="@color/hint_gray"
+                app:boxStrokeColor="@color/purple_500"
+                app:hintTextColor="@color/purple_500">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/pet_name_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapWords"
+                    android:maxLength="15"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Campo 2: raza. AutoCompleteTextView: empieza a sugerir razas de la API desde la 2da letra (completionThreshold=2) -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/breed_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="@string/new_appointment_breed_hint"
+                android:textColorHint="@color/hint_gray"
+                app:boxStrokeColor="@color/purple_500"
+                app:hintTextColor="@color/purple_500">
+
+                <!-- (Yair) HU3: style OutlinedBox para que el campo Raza se vea igual a los otros 3 (borde completo y texto con espacio) -->
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:id="@+id/breed_input"
+                    style="@style/Widget.MaterialComponents.AutoCompleteTextView.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:completionThreshold="2"
+                    android:inputType="text"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Campo 3: nombre del propietario (máx. 30 caracteres) -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/owner_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="@string/new_appointment_owner_hint"
+                android:textColorHint="@color/hint_gray"
+                app:boxStrokeColor="@color/purple_500"
+                app:hintTextColor="@color/purple_500">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/owner_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapWords"
+                    android:maxLength="30"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Campo 4: teléfono (solo números, máx. 10 dígitos) -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/phone_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="@string/new_appointment_phone_hint"
+                android:textColorHint="@color/hint_gray"
+                app:boxStrokeColor="@color/purple_500"
+                app:hintTextColor="@color/purple_500">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/phone_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Desplegable de síntomas (opciones en strings.xml; la posición 0 es solo el texto guía) -->
+            <Spinner
+                android:id="@+id/symptoms_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="16dp" />
+
+            <!-- Botón Guardar: nace deshabilitado (enabled=false) y el Fragment lo habilita cuando los 4 campos están llenos -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/save_appointment_button"
+                android:layout_width="wrap_content"
+                android:layout_height="56dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="32dp"
+                android:enabled="false"
+                android:paddingStart="32dp"
+                android:paddingEnd="32dp"
+                android:text="@string/new_appointment_save"
+                android:textAllCaps="false"
+                android:textColor="@color/btn_save_text"
+                android:textStyle="bold"
+                app:backgroundTint="@color/btn_save_tint"
+                app:cornerRadius="28dp"
+                app:icon="@drawable/ic_save"
+                app:iconGravity="textStart"
+                app:iconTint="@color/white" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Círculo de carga: invisible (gone) hasta que se está guardando -->
+    <ProgressBar
+        android:id="@+id/save_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

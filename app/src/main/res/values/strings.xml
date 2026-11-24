@@ -14,4 +14,49 @@
     <string name="appointment_turn_format"># %1$d</string>
     <string name="new_appointment_placeholder_title">Nueva Cita</string>
     <string name="appointment_detail_placeholder_title">Detalle de la Cita</string>
+
+
+
+    <!-- (Yair) HU3: textos de la ventana "Nueva Cita". Van aquí y no escritos dentro del layout, así se pueden cambiar o traducir en un solo lugar. -->
+    <!-- Título de la barra superior -->
+    <string name="new_appointment_title">Nueva Cita</string>
+    <!-- Descripción del botón de volver (accesibilidad: la lee el lector de pantalla) -->
+    <string name="new_appointment_back_description">Volver</string>
+    <!-- Hints = textos guía que flotan dentro de cada campo -->
+    <string name="new_appointment_pet_name_hint">Nombre de la Mascota</string>
+    <string name="new_appointment_breed_hint">Raza</string>
+    <string name="new_appointment_owner_hint">Nombre del Propietario</string>
+    <string name="new_appointment_phone_hint">Teléfono</string>
+    <!-- Texto del botón de guardar -->
+    <string name="new_appointment_save">Guardar Cita</string>
+    <!-- Mensajes (Toast) del Fragment -->
+    <string name="new_appointment_select_symptom">Selecciona un síntoma</string>
+    <string name="new_appointment_saved">Cita guardada</string>
+    <string name="new_appointment_save_error">No se pudo guardar la cita</string>
+
+    <!-- (Allan) HU4: textos de la ventana "Detalle de la Cita" -->
+    <string name="appointment_detail_owner_format">Propietario: %1$s</string>
+    <string name="appointment_detail_phone_format">Teléfono: %1$s</string>
+    <string name="appointment_detail_delete_description">Eliminar cita</string>
+    <string name="appointment_detail_edit_description">Editar cita</string>
+    <string name="appointment_detail_deleted">Cita eliminada</string>
+
+    <!-- (Joel) HU5: textos de la ventana "Editar Cita" -->
+    <string name="edit_appointment_title">Editar Cita</string>
+    <string name="edit_appointment_button">Editar Cita</string>
+    <string name="edit_appointment_saved">Cita actualizada</string>
+    <string name="edit_appointment_save_error">No se pudo actualizar la cita</string>
+
+    <!-- (Yair) HU3: opciones del Spinner de síntomas. La posición 0 ("Síntomas") es solo el texto guía: no cuenta como síntoma elegido. -->
+    <string-array name="symptoms_options">
+        <item>Síntomas</item>
+        <item>Solo duerme</item>
+        <item>No come</item>
+        <item>Fractura extremidad</item>
+        <item>Tiene pulgas</item>
+        <item>Tiene garrapatas</item>
+        <item>Bota demasiado pelo</item>
+    </string-array>
+
+
 </resources>

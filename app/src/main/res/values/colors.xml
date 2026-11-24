@@ -13,4 +13,11 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+
+    <!-- (Yair) HU3: gris de los textos guía (hints) de los campos de "Nueva Cita" -->
+    <color name="hint_gray">#FF9E9E9E</color>
+
+    <!-- (Allan) HU4: azul oscuro del botón flotante "Editar" en el detalle de la cita -->
+    <color name="edit_fab_dark_blue">#FF1F2A3A</color>
 </resources>

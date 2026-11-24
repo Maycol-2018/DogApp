@@ -28,17 +28,34 @@
             app:destination="@id/appointmentDetailFragment" />
     </fragment>
 
+    <!-- (Yair) HU3: título y vista previa de la ventana Nueva Cita (antes apuntaban al placeholder) -->
     <fragment
         android:id="@+id/newAppointmentFragment"
         android:name="com.example.dogapp.view.fragment.NewAppointmentFragment"
-        android:label="@string/new_appointment_placeholder_title"
-        tools:layout="@layout/fragment_placeholder" />
+        android:label="@string/new_appointment_title"
+        tools:layout="@layout/fragment_new_appointment" />
 
+    <!-- (Allan) HU4: vista previa con el layout real del detalle (antes apuntaba al placeholder) -->
     <fragment
         android:id="@+id/appointmentDetailFragment"
         android:name="com.example.dogapp.view.fragment.AppointmentDetailFragment"
         android:label="@string/appointment_detail_placeholder_title"
-        tools:layout="@layout/fragment_placeholder">
+        tools:layout="@layout/fragment_appointment_detail">
+        <argument
+            android:name="appointmentId"
+            app:argType="long" />
+        <!-- (Allan) HU4: botón azul "Editar" del detalle -> HU5 -->
+        <action
+            android:id="@+id/action_appointmentDetailFragment_to_editAppointmentFragment"
+            app:destination="@id/editAppointmentFragment" />
+    </fragment>
+
+    <!-- (Joel) HU5: ventana "Editar Cita"; recibe el id de la cita a editar -->
+    <fragment
+        android:id="@+id/editAppointmentFragment"
+        android:name="com.example.dogapp.view.fragment.EditAppointmentFragment"
+        android:label="@string/edit_appointment_title"
+        tools:layout="@layout/fragment_edit_appointment">
         <argument
             android:name="appointmentId"
             app:argType="long" />
