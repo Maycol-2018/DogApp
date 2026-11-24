@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.example.dogapp.model.Appointment
 import kotlinx.coroutines.flow.Flow
 
@@ -32,4 +33,8 @@ interface AppointmentDao {
     // (Allan) HU4: elimina la cita de la base de datos (botón rosado del detalle)
     @Delete
     suspend fun delete(appointment: Appointment)
+
+    // (Joel) HU5: guarda los cambios de una cita que ya existe (la busca por su id)
+    @Update
+    suspend fun update(appointment: Appointment)
 }

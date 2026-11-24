@@ -90,6 +90,33 @@ class AppointmentRepository(
         appointmentDao.delete(appointment)
     }
 
+    // (Joel) HU5: guarda los datos editados de una cita.
+    // Si la raza cambió, se pide a la API una foto de la nueva raza; si es la misma, se deja la foto que ya tenía.
+    // El síntoma y el turno (id) no se editan, así que se conservan de la cita original.
+    suspend fun updateAppointment(
+        appointment: Appointment,
+        petName: String,
+        breed: String,
+        ownerName: String,
+        ownerPhone: String
+    ) = withContext(Dispatchers.IO) {
+        val sameBreed = breed.equals(appointment.breed, ignoreCase = true)
+        val imageUrl = if (sameBreed && appointment.petImageUrl.isNotBlank()) {
+            appointment.petImageUrl
+        } else {
+            getBreedImageUrl(breed)
+        }
+        appointmentDao.update(
+            appointment.copy(
+                petName = petName,
+                breed = breed,
+                ownerName = ownerName,
+                ownerPhone = ownerPhone,
+                petImageUrl = imageUrl
+            )
+        )
+    }
+
     // (Yair) HU3: foto de la raza elegida; si la API no la encuentra usa una foto aleatoria general.
     // Si también falla (sin internet) devuelve "" y la cita se guarda igual, con la imagen por defecto.
     private suspend fun getBreedImageUrl(breed: String): String {
