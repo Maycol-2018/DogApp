@@ -17,4 +17,8 @@ interface AppointmentDao {
 
     @Insert
     suspend fun insertAll(appointments: List<Appointment>)
+
+    // (Yair) HU3: guarda UNA cita nueva y devuelve el id (turno) que le asignó Room
+    @Insert
+    suspend fun insert(appointment: Appointment): Long
 }
