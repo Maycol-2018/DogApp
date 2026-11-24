@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- (Yair) HU3: color del TEXTO del botón "Guardar Cita" según su estado.
+     Un selector elige el color automáticamente: el primer item que cumpla el estado gana. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Botón deshabilitado (campos vacíos): blanco semitransparente, se ve apagado -->
+    <item android:color="#99FFFFFF" android:state_enabled="false" />
+    <!-- Cualquier otro caso (habilitado): blanco normal -->
+    <item android:color="@color/white" />
+</selector>

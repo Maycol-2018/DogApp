@@ -28,11 +28,12 @@
             app:destination="@id/appointmentDetailFragment" />
     </fragment>
 
+    <!-- (Yair) HU3: título y vista previa de la ventana Nueva Cita (antes apuntaban al placeholder) -->
     <fragment
         android:id="@+id/newAppointmentFragment"
         android:name="com.example.dogapp.view.fragment.NewAppointmentFragment"
-        android:label="@string/new_appointment_placeholder_title"
-        tools:layout="@layout/fragment_placeholder" />
+        android:label="@string/new_appointment_title"
+        tools:layout="@layout/fragment_new_appointment" />
 
     <fragment
         android:id="@+id/appointmentDetailFragment"
