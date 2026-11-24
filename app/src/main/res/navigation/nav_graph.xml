@@ -35,11 +35,12 @@
         android:label="@string/new_appointment_title"
         tools:layout="@layout/fragment_new_appointment" />
 
+    <!-- (Allan) HU4: vista previa con el layout real del detalle (antes apuntaba al placeholder) -->
     <fragment
         android:id="@+id/appointmentDetailFragment"
         android:name="com.example.dogapp.view.fragment.AppointmentDetailFragment"
         android:label="@string/appointment_detail_placeholder_title"
-        tools:layout="@layout/fragment_placeholder">
+        tools:layout="@layout/fragment_appointment_detail">
         <argument
             android:name="appointmentId"
             app:argType="long" />
