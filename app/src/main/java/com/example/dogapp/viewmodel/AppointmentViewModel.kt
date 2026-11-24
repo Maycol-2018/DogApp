@@ -88,4 +88,28 @@ class AppointmentViewModel(application: Application) : AndroidViewModel(applicat
             _appointmentDeleted.value = true
         }
     }
+
+    // (Joel) HU5: estado de la edición de la cita. Reutiliza los mismos estados de SaveState
+    // (Idle, Loading, Success, Error) que usa "Nueva Cita".
+    private val _updateState = MutableLiveData<SaveState>(SaveState.Idle)
+    val updateState: LiveData<SaveState> = _updateState
+
+    // (Joel) HU5: guarda los cambios de la cita y le avisa a la pantalla cómo va, usando updateState
+    fun updateAppointment(
+        appointment: Appointment,
+        petName: String,
+        breed: String,
+        ownerName: String,
+        ownerPhone: String
+    ) {
+        viewModelScope.launch {
+            _updateState.value = SaveState.Loading
+            try {
+                repository.updateAppointment(appointment, petName, breed, ownerName, ownerPhone)
+                _updateState.value = SaveState.Success
+            } catch (e: Exception) {
+                _updateState.value = SaveState.Error
+            }
+        }
+    }
 }

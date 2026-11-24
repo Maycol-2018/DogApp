@@ -9,8 +9,7 @@ La rama de trabajo actual es `maycol`. Las siguientes historias de usuario está
 - HU1: Login con autenticación biométrica.
 - HU2: Home del administrador de citas.
 - HU4: Detalle de la cita (rama `allan`).
-
-La pantalla de HU5 —Editar Cita— existe actualmente como destino provisional para validar la navegación desde el detalle. Su funcionalidad se implementará en la siguiente historia.
+- HU5: Editar cita (rama `joel`).
 
 ## HU1: Login con biometría
 
@@ -201,7 +200,7 @@ LoginFragment
 HomeAdminFragment
     ├── NewAppointmentFragment    [HU3]
     └── AppointmentDetailFragment [HU4]
-            └── EditAppointmentFragment [HU5 provisional]
+            └── EditAppointmentFragment [HU5]
 ```
 
 Al ingresar a Home, el login se elimina de la pila de navegación. Por eso, el botón atrás no retorna al login. Además, `HomeAdminFragment` maneja el botón atrás del sistema para enviar la tarea al segundo plano y mostrar el escritorio del dispositivo.
@@ -259,9 +258,23 @@ fun observeAppointment(id: Long): Flow<Appointment?>
 suspend fun delete(appointment: Appointment)
 ```
 
-### HU5: Editar Cita
+### HU5: Editar Cita (implementada)
 
-Debe reemplazar el destino provisional `EditAppointmentFragment`, leer el argumento `appointmentId` y actualizar la cita en Room (por ejemplo con `@Update`).
+`EditAppointmentFragment` con el layout `fragment_edit_appointment.xml`:
+
+- Toolbar gris oscuro con esquinas inferiores curvas, título `Editar Cita` centrado y flecha rosada que vuelve al Detalle.
+- Recibe el `appointmentId` desde el Detalle y llena el formulario con los datos actuales de la cita.
+- Campos con hint gris que sube al tener el foco y borde morado: nombre (máx. 15), raza con `AutoCompleteTextView` de la API dog.ceo, propietario (máx. 30) y teléfono (solo números, máx. 10).
+- Botón rosado `Editar Cita` con icono, inactivo hasta que los 4 campos estén llenos; al habilitarse el texto queda blanco bold.
+- Al editar, actualiza la cita en Room y regresa al Home, donde se ve la cita modificada.
+- Si la raza cambió, el Repository pide a la API una foto de la nueva raza; si es la misma, conserva la foto anterior.
+
+Operación agregada al DAO:
+
+```kotlin
+@Update
+suspend fun update(appointment: Appointment)
+```
 
 ## Compilación y verificación
 

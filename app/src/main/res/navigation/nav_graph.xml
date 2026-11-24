@@ -50,12 +50,12 @@
             app:destination="@id/editAppointmentFragment" />
     </fragment>
 
-    <!-- (Allan) HU4: destino provisional de HU5 "Editar Cita"; recibe el id de la cita a editar -->
+    <!-- (Joel) HU5: ventana "Editar Cita"; recibe el id de la cita a editar -->
     <fragment
         android:id="@+id/editAppointmentFragment"
         android:name="com.example.dogapp.view.fragment.EditAppointmentFragment"
-        android:label="@string/edit_appointment_placeholder_title"
-        tools:layout="@layout/fragment_placeholder">
+        android:label="@string/edit_appointment_title"
+        tools:layout="@layout/fragment_edit_appointment">
         <argument
             android:name="appointmentId"
             app:argType="long" />
