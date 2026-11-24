@@ -8,8 +8,9 @@ La rama de trabajo actual es `maycol`. Las siguientes historias de usuario está
 
 - HU1: Login con autenticación biométrica.
 - HU2: Home del administrador de citas.
+- HU4: Detalle de la cita (rama `allan`).
 
-Las pantallas de HU3 —Nueva Cita— y HU4 —Detalle de la Cita— existen actualmente como destinos provisionales para validar la navegación. Su funcionalidad se implementará en las próximas historias.
+La pantalla de HU5 —Editar Cita— existe actualmente como destino provisional para validar la navegación desde el detalle. Su funcionalidad se implementará en la siguiente historia.
 
 ## HU1: Login con biometría
 
@@ -198,8 +199,9 @@ LoginFragment
     | autenticación biométrica exitosa
     v
 HomeAdminFragment
-    ├── NewAppointmentFragment    [HU3 provisional]
-    └── AppointmentDetailFragment [HU4 provisional]
+    ├── NewAppointmentFragment    [HU3]
+    └── AppointmentDetailFragment [HU4]
+            └── EditAppointmentFragment [HU5 provisional]
 ```
 
 Al ingresar a Home, el login se elimina de la pila de navegación. Por eso, el botón atrás no retorna al login. Además, `HomeAdminFragment` maneja el botón atrás del sistema para enviar la tarea al segundo plano y mostrar el escritorio del dispositivo.
@@ -237,21 +239,29 @@ El DAO deberá incorporar una operación como:
 suspend fun insert(appointment: Appointment): Long
 ```
 
-### HU4: Detalle de la Cita
+### HU4: Detalle de la Cita (implementada)
 
-Debe reemplazar `AppointmentDetailFragment` y:
+`AppointmentDetailFragment` con el layout `fragment_appointment_detail.xml`:
 
-- Recibir el `appointmentId` desde la navegación.
-- Consultar la cita en Room a través del ViewModel y Repository.
-- Mostrar toda la información de la mascota.
-- Preparar las acciones de editar o eliminar si la HU lo requiere.
+- Recibe el `appointmentId` desde el Home y observa la cita en Room con `Flow` (ViewModel → Repository → DAO).
+- Toolbar gris oscuro con esquinas inferiores curvas, nombre de la mascota centrado y flecha rosada que vuelve al Home.
+- Tarjeta con la foto de la mascota (Glide) montada sobre una tarjeta blanca con el turno, la raza en negro bold, el síntoma, una línea rosada, el propietario y el teléfono.
+- Botón flotante rosado: elimina la cita de Room y regresa al Home, donde ya no aparece.
+- Botón flotante azul oscuro: navega a `EditAppointmentFragment` (HU5) enviando el `appointmentId`.
 
-El DAO deberá incorporar una consulta por ID:
+Operaciones agregadas al DAO:
 
 ```kotlin
-@Query("SELECT * FROM appointments WHERE id = :appointmentId")
-suspend fun getAppointmentById(appointmentId: Long): Appointment?
+@Query("SELECT * FROM appointments WHERE id = :id")
+fun observeAppointment(id: Long): Flow<Appointment?>
+
+@Delete
+suspend fun delete(appointment: Appointment)
 ```
+
+### HU5: Editar Cita
+
+Debe reemplazar el destino provisional `EditAppointmentFragment`, leer el argumento `appointmentId` y actualizar la cita en Room (por ejemplo con `@Update`).
 
 ## Compilación y verificación
 
