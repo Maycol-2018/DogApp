@@ -44,5 +44,20 @@
         <argument
             android:name="appointmentId"
             app:argType="long" />
+        <!-- (Allan) HU4: botón azul "Editar" del detalle -> HU5 -->
+        <action
+            android:id="@+id/action_appointmentDetailFragment_to_editAppointmentFragment"
+            app:destination="@id/editAppointmentFragment" />
+    </fragment>
+
+    <!-- (Allan) HU4: destino provisional de HU5 "Editar Cita"; recibe el id de la cita a editar -->
+    <fragment
+        android:id="@+id/editAppointmentFragment"
+        android:name="com.example.dogapp.view.fragment.EditAppointmentFragment"
+        android:label="@string/edit_appointment_placeholder_title"
+        tools:layout="@layout/fragment_placeholder">
+        <argument
+            android:name="appointmentId"
+            app:argType="long" />
     </fragment>
 </navigation>

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -19,7 +20,7 @@ import com.example.dogapp.viewmodel.AppointmentViewModel
 
 // (Allan) HU4: ventana "Detalle de la Cita".
 // Recibe el id de la cita que se tocó en el Home, la busca en Room (por medio del ViewModel)
-// y muestra toda su información. Desde aquí se puede eliminar la cita.
+// y muestra toda su información. Desde aquí se puede eliminar la cita o ir a editarla.
 class AppointmentDetailFragment : Fragment() {
 
     private var _binding: FragmentAppointmentDetailBinding? = null
@@ -64,7 +65,7 @@ class AppointmentDetailFragment : Fragment() {
         }
     }
 
-    // (Allan) Eventos: flecha de volver y eliminar
+    // (Allan) Eventos: flecha de volver, eliminar y editar
     private fun controladores() {
         // Flecha rosada: regresa al Home
         binding.backButton.setOnClickListener {
@@ -74,6 +75,16 @@ class AppointmentDetailFragment : Fragment() {
         // Botón rosado: elimina la cita de Room (sin diálogo de confirmación, como dice la HU)
         binding.deleteFab.setOnClickListener {
             appointment?.let { viewModel.deleteAppointment(it) }
+        }
+
+        // Botón azul: va a la ventana Editar Cita (HU5) con el id de la cita
+        binding.editFab.setOnClickListener {
+            appointment?.let { cita ->
+                findNavController().navigate(
+                    R.id.action_appointmentDetailFragment_to_editAppointmentFragment,
+                    bundleOf("appointmentId" to cita.id)
+                )
+            }
         }
     }
 

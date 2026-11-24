@@ -40,6 +40,8 @@
     <string name="appointment_detail_delete_description">Eliminar cita</string>
     <string name="appointment_detail_edit_description">Editar cita</string>
     <string name="appointment_detail_deleted">Cita eliminada</string>
+    <!-- (Allan) HU4: título provisional de "Editar Cita" hasta que se implemente HU5 -->
+    <string name="edit_appointment_placeholder_title">Editar Cita</string>
 
     <!-- (Yair) HU3: opciones del Spinner de síntomas. La posición 0 ("Síntomas") es solo el texto guía: no cuenta como síntoma elegido. -->
     <string-array name="symptoms_options">
