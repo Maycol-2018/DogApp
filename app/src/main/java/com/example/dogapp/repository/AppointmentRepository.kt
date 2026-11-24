@@ -81,6 +81,15 @@ class AppointmentRepository(
         )
     }
 
+    // (Allan) HU4: la cita seleccionada en el Home, para mostrar su detalle
+    fun observeAppointment(id: Long): Flow<Appointment?> =
+        appointmentDao.observeAppointment(id)
+
+    // (Allan) HU4: elimina la cita de Room (en un hilo de fondo, no en el de la pantalla)
+    suspend fun deleteAppointment(appointment: Appointment) = withContext(Dispatchers.IO) {
+        appointmentDao.delete(appointment)
+    }
+
     // (Yair) HU3: foto de la raza elegida; si la API no la encuentra usa una foto aleatoria general.
     // Si también falla (sin internet) devuelve "" y la cita se guarda igual, con la imagen por defecto.
     private suspend fun getBreedImageUrl(breed: String): String {
