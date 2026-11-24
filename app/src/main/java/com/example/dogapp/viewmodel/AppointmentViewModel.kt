@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.dogapp.data.AppDatabase
+import com.example.dogapp.model.Appointment
 import com.example.dogapp.repository.AppointmentRepository
 import kotlinx.coroutines.launch
 
@@ -70,4 +71,21 @@ class AppointmentViewModel(application: Application) : AndroidViewModel(applicat
         }
     }
 
+    // (Allan) HU4: avisa a la pantalla de detalle que la cita ya se borró de Room.
+    // Así el Fragment navega al Home solo cuando el borrado terminó (si navegara antes,
+    // el ViewModel se destruiría y la corrutina del borrado podría cancelarse).
+    private val _appointmentDeleted = MutableLiveData(false)
+    val appointmentDeleted: LiveData<Boolean> = _appointmentDeleted
+
+    // (Allan) HU4: la cita que se muestra en el detalle, buscada por su id (el "turno")
+    fun getAppointment(id: Long): LiveData<Appointment?> =
+        repository.observeAppointment(id).asLiveData()
+
+    // (Allan) HU4: elimina la cita y luego avisa con appointmentDeleted
+    fun deleteAppointment(appointment: Appointment) {
+        viewModelScope.launch {
+            repository.deleteAppointment(appointment)
+            _appointmentDeleted.value = true
+        }
+    }
 }
