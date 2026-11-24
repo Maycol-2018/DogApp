@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- (Yair) HU3: color de FONDO del botón "Guardar Cita" según su estado. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Deshabilitado (formulario incompleto): rosado claro, se ve apagado -->
+    <item android:color="#F7B2B7" android:state_enabled="false" />
+    <!-- Habilitado (los 4 campos llenos): rosado fuerte de la app -->
+    <item android:color="@color/fab_pink" />
+</selector>

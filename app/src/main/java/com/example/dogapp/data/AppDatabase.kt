@@ -6,7 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.dogapp.model.Appointment
 
-@Database(entities = [Appointment::class], version = 1, exportSchema = false)
+// (Yair) HU3: version 2 porque la entidad Appointment ganó campos nuevos (raza, propietario, teléfono, foto)
+@Database(entities = [Appointment::class], version = 2, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun appointmentDao(): AppointmentDao
@@ -21,7 +22,11 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "dogapp_database"
-                ).build().also { INSTANCE = it }
+                )
+                    // (Yair) Si cambia el esquema, borra y recrea la base (aceptable en desarrollo)
+                    .fallbackToDestructiveMigration(dropAllTables = true)
+                    .build()
+                    .also { INSTANCE = it }
             }
     }
 }
